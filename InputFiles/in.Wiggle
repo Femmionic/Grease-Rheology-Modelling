@@ -1,0 +1,71 @@
+# input script for wiggling of a random system of rods
+
+#Variables
+variable      	T equal 0.01     #Temperature 
+variable		A equal 0.1*lx  #Amplitude
+
+units 		lj
+boundary 	p p p
+atom_style 	angle 
+neighbor		0.8 bin
+neigh_modify	delay 1 check yes
+comm_modify	vel yes
+
+read_data ../../../DataFiles/WCL/data.CL20_1.gz
+
+# interaction styles
+pair_style 	hybrid/overlay dpd/tstat $T $T 2.0 34387 lj/cut 2.5 
+pair_modify 	shift yes table 14
+bond_style 	harmonic
+angle_style 	harmonic
+special_bonds 	lj/coul 0.0 1.0 1.0
+
+# force field parameters
+angle_coeff 	1 30.0 180.0 #A-A-A
+pair_coeff   	* *   dpd/tstat 7.0 
+pair_coeff   	* *   lj/cut 1.0 1.0 1.12246
+bond_coeff   	1     500.0 0.5   # A-A
+
+# initial velocities
+velocity 	all create $T 5324324
+
+# fixes
+fix	  	1 all nve/limit 0.01
+
+timestep 0.005
+
+#Thermo
+thermo		10
+thermo_style     custom step temp pe ebond etotal press pxy
+
+#Equilibration
+run 		100000
+
+#fix
+unfix		1
+fix		2 all nve
+
+run		100000
+
+#Set center of mass velocity to zero
+velocity      	all scale $T 
+velocity      	all zero linear
+
+#fix
+fix		3 all deform 1 xy wiggle $A 100.0 remap v units box
+
+#Thermo
+thermo		10
+thermo_style     custom step temp pe ebond etotal press pxy
+
+reset_timestep	0
+
+#Dump
+dump	         myDump all custom/gz 1000000 dump.snaps.gz id mol type x y z ix iy iz
+
+# run
+run 		250000
+
+# write out data file
+write_data data.WiggleD15_1End
+
