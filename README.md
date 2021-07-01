@@ -1,4 +1,4 @@
-# Moltemplate-Random-Chains
+# Grease Rheology Modelling
 This repository contains datafiles and inputfiles that can be used with the molecular dynamics package LAMMPS (https://lammps.sandia.gov/).
 
 ### REQUIREMENTS
