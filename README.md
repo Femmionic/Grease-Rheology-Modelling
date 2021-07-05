@@ -1,5 +1,5 @@
 # Grease Rheology Modelling
-This repository contains datafiles and inputfiles that can be used with the molecular dynamics package LAMMPS (https://lammps.sandia.gov/).
+This repository contains datafiles and inputfiles that can be used with the molecular dynamics package [LAMMPS](https://lammps.sandia.gov/ "LAMMPS Webpage").
 
 ### REQUIREMENTS
 To run the simulations in this repository you need to have LAMMPS installed. Different ways to install LAMMPS are described in the LAMMPS documentation: [LAMMPS documentation](https://lammps.sandia.gov/doc/Install.html "LAMMPS documentation")
